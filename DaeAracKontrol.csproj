@@ -5,6 +5,7 @@
     <DebugSymbols>false</DebugSymbols>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="0Harmony">
       <HintPath>Kaynak Kütüphaneler\0Harmony.dll</HintPath>
