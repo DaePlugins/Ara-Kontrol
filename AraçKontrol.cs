@@ -104,7 +104,7 @@ namespace DaeAracKontrol
 		    }
 
             var araç = Configuration.Instance.ÖzelAraçlar.FirstOrDefault(a => a == hasarıAlanAraç.id);
-            if (Configuration.Instance.ÖzelAraçlarAktif && (Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) && oyuncu.HasPermission($"dae.arackontrol.{araç}.ah"))
+            if (Configuration.Instance.ÖzelAraçlarAktif && (Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) || oyuncu.HasPermission($"dae.arackontrol.{araç}.ah"))
             {
                 return;
             }
@@ -121,7 +121,7 @@ namespace DaeAracKontrol
 		    }
 
             var araç = Configuration.Instance.ÖzelAraçlar.FirstOrDefault(a => a == hasarıAlanAraç.id);
-            if (Configuration.Instance.ÖzelAraçlarAktif && (Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) && oyuncu.HasPermission($"dae.arackontrol.{araç}.th"))
+            if (Configuration.Instance.ÖzelAraçlarAktif && (Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) || oyuncu.HasPermission($"dae.arackontrol.{araç}.th"))
             {
                 return;
             }
@@ -138,7 +138,7 @@ namespace DaeAracKontrol
             }
 
             var araç = Configuration.Instance.ÖzelAraçlar.FirstOrDefault(a => a == carjacklananAraç.id);
-            if (Configuration.Instance.ÖzelAraçlarAktif && (Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) && oyuncu.HasPermission($"dae.arackontrol.{araç}.c"))
+            if (Configuration.Instance.ÖzelAraçlarAktif && (Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) || oyuncu.HasPermission($"dae.arackontrol.{araç}.c"))
             {
                 return;
             }
