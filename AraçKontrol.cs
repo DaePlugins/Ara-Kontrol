@@ -31,6 +31,21 @@ namespace DaeAracKontrol
                     new HarmonyMethod(typeof(Yamalar).GetMethod("AraçPatladıktanSonra", AccessTools.all)));
             }
 
+            if (!Configuration.Instance.HerkesAraçlaraHasarVerebilir)
+            {
+                VehicleManager.onDamageVehicleRequested += AracaHasarVerilmekİstendiğinde;
+            }
+
+            if (!Configuration.Instance.HerkesTekerlereHasarVerebilir)
+            {
+                VehicleManager.onDamageTireRequested += TekereHasarVerilmekİstendiğinde;
+            }
+
+            if (!Configuration.Instance.HerkesCarjackKullanabilir)
+            {
+                VehicleManager.onVehicleCarjacked += CarjackKullanılmakİstendiğinde;
+            }
+
 			if (!Configuration.Instance.HerkesAraçlarıTamirEdebilir)
 			{
                 if (_harmony == null)
@@ -50,21 +65,6 @@ namespace DaeAracKontrol
 
                 _harmony.Patch(typeof(UseableFuel).GetMethod("fire", AccessTools.all),
                     new HarmonyMethod(typeof(Yamalar).GetMethod("EşyaKullanılmadanÖnce", AccessTools.all)));
-            }
-
-            if (!Configuration.Instance.HerkesAraçlaraHasarVerebilir)
-            {
-                VehicleManager.onDamageVehicleRequested += AracaHasarVerilmekİstendiğinde;
-            }
-
-            if (!Configuration.Instance.HerkesTekerlereHasarVerebilir)
-            {
-                VehicleManager.onDamageTireRequested += TekereHasarVerilmekİstendiğinde;
-            }
-
-            if (!Configuration.Instance.HerkesCarjackKullanabilir)
-            {
-                VehicleManager.onVehicleCarjacked += CarjackKullanılmakİstendiğinde;
             }
 		}
 
