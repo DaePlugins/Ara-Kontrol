@@ -1,34 +1,34 @@
 ﻿using System.Linq;
-using System.Reflection;
 using Rocket.API;
 using Rocket.Core.Plugins;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;
 using UnityEngine;
-using Harmony;
+using HarmonyLib;
 
 namespace DaeAracKontrol
 {
 	public class AraçKontrol : RocketPlugin<AraçKontrolYapılandırma>
 	{
 	    public static AraçKontrol Örnek { get; private set; }
-	    private HarmonyInstance _harmony;
+	    private Harmony _harmony;
 
         protected override void Load()
 		{
 		    Örnek = this;
+            
+            if (_harmony == null)
+            {
+                _harmony = new Harmony("dae.arackontrol");
+            }
 
             if (Configuration.Instance.PatlayanAraçlarSilinsin)
             {
-                if (_harmony == null)
-                {
-                    _harmony = HarmonyInstance.Create("dae.arackontrol");
-                }
 
-                _harmony.Patch(typeof(InteractableVehicle).GetMethod("explode", AccessTools.all),
-                    new HarmonyMethod(typeof(Yamalar).GetMethod("AraçPatlamadanÖnce", AccessTools.all)),
-                    new HarmonyMethod(typeof(Yamalar).GetMethod("AraçPatladıktanSonra", AccessTools.all)));
+                _harmony.Patch(AccessTools.Method(typeof(InteractableVehicle), "explode"),
+                    new HarmonyMethod(AccessTools.Method(typeof(Yamalar), "AraçPatlamadanÖnce")),
+                    new HarmonyMethod(AccessTools.Method(typeof(Yamalar), "AraçPatladıktanSonra")));
             }
 
             if (!Configuration.Instance.HerkesAraçlaraHasarVerebilir)
@@ -48,23 +48,13 @@ namespace DaeAracKontrol
 
 			if (!Configuration.Instance.HerkesAraçlarıTamirEdebilir)
 			{
-                if (_harmony == null)
-                {
-                    _harmony = HarmonyInstance.Create("dae.arackontrol");
-                }
-
-			    _harmony.PatchAll(Assembly.GetExecutingAssembly());
+                _harmony.PatchAll();
 			}
 
             if (!Configuration.Instance.HerkesBenzinDoldurabilir || !Configuration.Instance.HerkesBenzinAlabilir)
             {
-                if (_harmony == null)
-                {
-                    _harmony = HarmonyInstance.Create("dae.arackontrol");
-                }
-
-                _harmony.Patch(typeof(UseableFuel).GetMethod("fire", AccessTools.all),
-                    new HarmonyMethod(typeof(Yamalar).GetMethod("EşyaKullanılmadanÖnce", AccessTools.all)));
+                _harmony.Patch(AccessTools.Method(typeof(UseableFuel), "fire"),
+                    new HarmonyMethod(AccessTools.Method(typeof(Yamalar), "EşyaKullanılmadanÖnce")));
             }
 		}
 
