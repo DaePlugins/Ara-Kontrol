@@ -10,14 +10,13 @@ namespace DaeAracKontrol
 {
     internal class Yamalar
     {
-        private static void AraçPatlamadanÖnce(InteractableVehicle __instance) => typeof(VehicleAsset).GetProperty("dropsTableId").DeclaringType.GetProperty("dropsTableId").GetSetMethod(true).Invoke(__instance.asset, new object[]{ (ushort)0 });
+        private static void AraçPatlamadanÖnce(InteractableVehicle __instance) => AccessTools.Property(typeof(VehicleAsset), "dropsTableId").GetSetMethod(true).Invoke(__instance.asset, new object[]{ (ushort)0 });
 
         private static void AraçPatladıktanSonra(InteractableVehicle __instance) => VehicleManager.instance.channel.send("tellVehicleDestroy", ESteamCall.ALL, ESteamPacket.UPDATE_RELIABLE_BUFFER, __instance.instanceID);
 
         private static bool EşyaKullanılmadanÖnce(UseableFuel __instance, bool mode)
         {
-            if (mode && AraçKontrol.Örnek.Configuration.Instance.HerkesBenzinDoldurabilir
-                || !mode && AraçKontrol.Örnek.Configuration.Instance.HerkesBenzinAlabilir)
+            if (!mode || AraçKontrol.Örnek.Configuration.Instance.HerkesBenzinDoldurabilir)
             {
                 return true;
             }
@@ -34,35 +33,18 @@ namespace DaeAracKontrol
                 return true;
             }
 
-            if (mode)
+            if (oyuncu.HasPermission($"dae.arackontrol.{AraçKontrol.Örnek.Configuration.Instance.BenzinDoldurmaYetkisi}"))
             {
-                if (oyuncu.HasPermission($"dae.arackontrol.{AraçKontrol.Örnek.Configuration.Instance.BenzinDoldurmaYetkisi}"))
-                {
-                    return true;
-                }
-                
-                var araç = AraçKontrol.Örnek.Configuration.Instance.ÖzelAraçlar.FirstOrDefault(a => a == ışınBilgisi.vehicle.id);
-                if (AraçKontrol.Örnek.Configuration.Instance.ÖzelAraçlarAktif &&
-                    (AraçKontrol.Örnek.Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) || oyuncu.HasPermission($"dae.arackontrol.{araç}.bd"))
-                {
-                    return true;
-                }
+                return true;
             }
-            else
+
+            var araç = AraçKontrol.Örnek.Configuration.Instance.ÖzelAraçlar.FirstOrDefault(a => a == ışınBilgisi.vehicle.id);
+            if (AraçKontrol.Örnek.Configuration.Instance.ÖzelAraçlarAktif &&
+                (AraçKontrol.Örnek.Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) || oyuncu.HasPermission($"dae.arackontrol.{araç}.bd"))
             {
-                if (oyuncu.HasPermission($"dae.arackontrol.{AraçKontrol.Örnek.Configuration.Instance.BenzinAlmaYetkisi}"))
-                {
-                    return true;
-                }
-                
-                var araç = AraçKontrol.Örnek.Configuration.Instance.ÖzelAraçlar.FirstOrDefault(a => a == ışınBilgisi.vehicle.id);
-                if (AraçKontrol.Örnek.Configuration.Instance.ÖzelAraçlarAktif &&
-                    (AraçKontrol.Örnek.Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) || oyuncu.HasPermission($"dae.arackontrol.{araç}.ba"))
-                {
-                    return true;
-                }
+                return true;
             }
-            
+
             oyuncu.Player.equipment.dequip();
 
             return false;
@@ -100,6 +82,8 @@ namespace DaeAracKontrol
             {
                 return true;
             }
+
+            oyuncu.Player.equipment.dequip();
 
             return false;
         }

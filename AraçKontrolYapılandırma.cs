@@ -8,6 +8,8 @@ namespace DaeAracKontrol
     {
         public bool PatlayanAraçlarSilinsin { get; set; }
 
+        public bool AraçlarÇarpmalardanHasarAlabilir { get; set; }
+
         public bool HerkesAraçlaraHasarVerebilir { get; set; }
         public string AraçlaraHasarYetkisi { get; set; }
 
@@ -34,6 +36,8 @@ namespace DaeAracKontrol
         public void LoadDefaults()
         {
             PatlayanAraçlarSilinsin = true;
+
+            AraçlarÇarpmalardanHasarAlabilir = true;
 
             HerkesAraçlaraHasarVerebilir = false;
             AraçlaraHasarYetkisi = "AraçlaraHasarVerebilir";
