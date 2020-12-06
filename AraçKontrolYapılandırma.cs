@@ -27,7 +27,7 @@ namespace DaeAracKontrol
 
         public bool HerkesBenzinAlabilir { get; set; }
         public string BenzinAlmaYetkisi { get; set; }
-	    
+        
         public bool ÖzelAraçlarAktif { get; set; }
         public bool ÖzelAraçlardaVarsaİzinVer { get; set; }
         [XmlArrayItem("Araç")]

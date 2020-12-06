@@ -9,14 +9,14 @@ using HarmonyLib;
 
 namespace DaeAracKontrol
 {
-	public class AraçKontrol : RocketPlugin<AraçKontrolYapılandırma>
-	{
-	    public static AraçKontrol Örnek { get; private set; }
-	    private Harmony _harmony;
+    public class AraçKontrol : RocketPlugin<AraçKontrolYapılandırma>
+    {
+        public static AraçKontrol Örnek { get; private set; }
+        private Harmony _harmony;
 
         protected override void Load()
-		{
-		    Örnek = this;
+        {
+            Örnek = this;
             
             _harmony = new Harmony("dae.arackontrol");
             
@@ -42,10 +42,10 @@ namespace DaeAracKontrol
                 VehicleManager.onVehicleCarjacked += CarjackKullanılmakİstendiğinde;
             }
 
-			if (!Configuration.Instance.HerkesAraçlarıTamirEdebilir)
-			{
+            if (!Configuration.Instance.HerkesAraçlarıTamirEdebilir)
+            {
                 _harmony.PatchAll();
-			}
+            }
 
             if (!Configuration.Instance.HerkesBenzinAlabilir)
             {
@@ -57,16 +57,16 @@ namespace DaeAracKontrol
                 _harmony.Patch(AccessTools.Method(typeof(UseableFuel), "fire"),
                     new HarmonyMethod(AccessTools.Method(typeof(Yamalar), "EşyaKullanılmadanÖnce")));
             }
-		}
+        }
 
         protected override void Unload()
-	    {
-	        Örnek = null;
+        {
+            Örnek = null;
             
-			if (Configuration.Instance.PatlayanAraçlarSilinsin || !Configuration.Instance.HerkesAraçlarıTamirEdebilir || !Configuration.Instance.HerkesBenzinDoldurabilir)
-			{
-			    _harmony.UnpatchAll("dae.arackontrol");
-			}
+            if (Configuration.Instance.PatlayanAraçlarSilinsin || !Configuration.Instance.HerkesAraçlarıTamirEdebilir || !Configuration.Instance.HerkesBenzinDoldurabilir)
+            {
+                _harmony.UnpatchAll("dae.arackontrol");
+            }
 
             if (!Configuration.Instance.HerkesAraçlaraHasarVerebilir)
             {
@@ -87,7 +87,7 @@ namespace DaeAracKontrol
             {
                 VehicleManager.onSiphonVehicleRequested -= BenzinAlınmakİstediğinde;
             }
-	    }
+        }
 
         private void AracaHasarVerilmekİstendiğinde(CSteamID hasarıVeren, InteractableVehicle hasarıAlanAraç, ref ushort hasar, ref bool tamirEdilebilir, ref bool hasarVerebilir, EDamageOrigin kaynak)
         {
@@ -102,10 +102,10 @@ namespace DaeAracKontrol
             }
 
             var oyuncu = UnturnedPlayer.FromCSteamID(hasarıVeren);
-		    if (oyuncu == null || oyuncu.HasPermission($"dae.arackontrol.{Configuration.Instance.AraçlaraHasarYetkisi}"))
-		    {
-		        return;
-		    }
+            if (oyuncu == null || oyuncu.HasPermission($"dae.arackontrol.{Configuration.Instance.AraçlaraHasarYetkisi}"))
+            {
+                return;
+            }
 
             var araç = Configuration.Instance.ÖzelAraçlar.FirstOrDefault(a => a == hasarıAlanAraç.id);
             if (Configuration.Instance.ÖzelAraçlarAktif && (Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) || oyuncu.HasPermission($"dae.arackontrol.{araç}.ah"))
@@ -116,15 +116,15 @@ namespace DaeAracKontrol
             oyuncu.Player.equipment.dequip();
 
             hasarVerebilir = false;
-		}
-		
-		private void TekereHasarVerilmekİstendiğinde(CSteamID hasarıVeren, InteractableVehicle hasarıAlanAraç, int tekerSırası, ref bool hasarVerebilir, EDamageOrigin kaynak)
-		{
+        }
+        
+        private void TekereHasarVerilmekİstendiğinde(CSteamID hasarıVeren, InteractableVehicle hasarıAlanAraç, int tekerSırası, ref bool hasarVerebilir, EDamageOrigin kaynak)
+        {
             var oyuncu = UnturnedPlayer.FromCSteamID(hasarıVeren);
-		    if (oyuncu == null || oyuncu.HasPermission($"dae.arackontrol.{Configuration.Instance.TekerlereHasarYetkisi}"))
-		    {
-		        return;
-		    }
+            if (oyuncu == null || oyuncu.HasPermission($"dae.arackontrol.{Configuration.Instance.TekerlereHasarYetkisi}"))
+            {
+                return;
+            }
 
             var araç = Configuration.Instance.ÖzelAraçlar.FirstOrDefault(a => a == hasarıAlanAraç.id);
             if (Configuration.Instance.ÖzelAraçlarAktif && (Configuration.Instance.ÖzelAraçlardaVarsaİzinVer ? araç != 0 : araç == 0) || oyuncu.HasPermission($"dae.arackontrol.{araç}.th"))
@@ -135,7 +135,7 @@ namespace DaeAracKontrol
             oyuncu.Player.equipment.dequip();
 
             hasarVerebilir = false;
-		}
+        }
 
         private void CarjackKullanılmakİstendiğinde(InteractableVehicle carjacklananAraç, Player carjackıKullananOyuncu, ref bool carjackıKullanabilir, ref Vector3 kuvvet, ref Vector3 tork)
         {
@@ -174,5 +174,5 @@ namespace DaeAracKontrol
 
             benzinAlabilir = false;
         }
-	}
+    }
 }
